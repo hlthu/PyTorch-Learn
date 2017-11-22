@@ -138,21 +138,13 @@ class ToTensor(object):
 
 scale = Rescale(256)
 crop = RandomCrop(128)
-composed = transforms.Compose([Rescale(256), RandomCrop(255)])
+composed = transforms.Compose([Rescale(260), RandomCrop(256)])
 
 sample = face_dataset[65]
 for i, tsfrm in enumerate([scale, crop, composed]):
     trans_sample = tsfrm(sample)
     ax = plt.subplot(1, 3, i+1)
+    ax.axis('off')
+    plt.tight_layout()
     show_landmarks(**trans_sample)
 plt.show()
-
-## iterating throughthe dataset
-transformed_dataset = FaceLandmarksDataset('data/faces/face_landmarks.csv', 'data/faces',
-        transform=transforms.Compose([Rescale(256), RandomCrop(255), ToTensor()]))
-
-for i in range(len(transformed_dataset)):
-    sample = transformed_dataset[i]
-
-## batching and shuffling the data     
-dataloader = DataLoader(transformed_dataset, batch_size=4, shuffle=True, num_workers=4)
