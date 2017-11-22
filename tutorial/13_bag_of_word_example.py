@@ -54,16 +54,16 @@ def make_bow_vector(sent, word_to_ix):
 # make Target to an integer
 label_to_ix = {"SPANISH": 0, "ENGLISH": 1}
 def make_label(label, label_to_ix):
-    vec = torch.zeros(1, LABEL_SIZE)
-    vec[0, label_to_ix[label]] = 1
+    vec = torch.LongTensor(1)
+    vec[0] = label_to_ix[label]
     return vec
 
 ###################################
 # train and test
-loss_fn = nn.MSELoss(size_average=False)
-optimizer = optim.SGD(model.parameters(), lr=0.002)
+loss_fn = nn.CrossEntropyLoss()
+optimizer = optim.SGD(model.parameters(), lr=0.01)
 
-for epoch in range(1000):
+for epoch in range(100):
     epoch_loss = 0
     for sent, label in data:
         # init the grad
@@ -72,8 +72,8 @@ for epoch in range(1000):
         # input and output
         input = make_bow_vector(sent, word_to_ix)
         output = make_label(label, label_to_ix)
-        input = Variable(input.cuda(), requires_grad=False)
-        output = Variable(output.cuda(), requires_grad=False)
+        input = Variable(input.cuda(), requires_grad=True)
+        output = Variable(output.cuda())
 
         # forward
         pred = model(input)
@@ -86,7 +86,7 @@ for epoch in range(1000):
         loss.backward()
         optimizer.step()
 
-    if epoch % 100 == 99:
+    if epoch % 10 == 9:
         print('-'*40)
         print('Epoch', epoch+1, 'Loss', epoch_loss)
         ## test
