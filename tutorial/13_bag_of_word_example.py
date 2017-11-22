@@ -63,7 +63,7 @@ def make_label(label, label_to_ix):
 loss_fn = nn.CrossEntropyLoss()
 optimizer = optim.SGD(model.parameters(), lr=0.01)
 
-for epoch in range(100):
+for epoch in range(200):
     epoch_loss = 0
     for sent, label in data:
         # init the grad
@@ -72,8 +72,8 @@ for epoch in range(100):
         # input and output
         input = make_bow_vector(sent, word_to_ix)
         output = make_label(label, label_to_ix)
-        input = Variable(input.cuda(), requires_grad=True)
-        output = Variable(output.cuda())
+        input = Variable(input.cuda(), requires_grad=False)
+        output = Variable(output.cuda(), requires_grad=False)
 
         # forward
         pred = model(input)
