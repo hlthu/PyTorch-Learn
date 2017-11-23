@@ -183,8 +183,8 @@ cax = ax.matshow(confusion.numpy())
 fig.colorbar(cax)
 
 # Set up axes
-ax.set_xticklabels([''] + all_categories, rotation=90)
-ax.set_yticklabels([''] + all_categories)
+ax.set_xticklabels([''] + all_category, rotation=90)
+ax.set_yticklabels([''] + all_category)
 
 # Force label at every tick
 ax.xaxis.set_major_locator(ticker.MultipleLocator(1))
